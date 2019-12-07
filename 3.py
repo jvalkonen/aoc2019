@@ -78,6 +78,18 @@ def get_closest_intersection(xings: list):
             print("New best {}, distance={}".format(x,best_dist))
     return closest_xing
 
+def shortest_dist(w1: LineString, w2: LineString, xings: list):
+    best = -1
+    for x in xings:
+        cand = w1.project(x) + w2.project(x)
+        if (best == -1):
+            best = cand
+            print("First candidate of shortest combined distance for crossing {}={}".format(x, int(best)))
+        if (cand < best):
+            best = cand
+            print("New shortest combined distance for crossing {}={}".format(x, int(best)))
+    return int(best)
+
 def calc_answer(arr: list):
     # These are shapely LineStrings
     wire1 = make_wire(arr[0].split(','))
@@ -90,6 +102,9 @@ def calc_answer(arr: list):
 
     closest_xing = get_closest_intersection(intersections)
     print("Closest found is {}, distance={}".format(closest_xing, int(get_manhattan_distance(closest_xing))))
+
+    shortest = shortest_dist(wire1, wire2, intersections)
+    print("Shortest combined distance is {}".format(shortest))
 
 
 print("RUNNING TESTS WITH KNOWN RESULTS")
