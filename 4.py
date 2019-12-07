@@ -2,19 +2,13 @@
 import re
 
 def has_double_digit(num: int):
-    return re.search(r'(\d)\1+', str(num)) is not None
+    return re.search(r'(\d)(?<!(?=\1)..)\1(?!\1)', str(num)) is not None
 
 def has_right_length(num: int, length: int=6):
     return len(str(num)) == length
 
 def has_no_decreasing_digits(num: int):
-    last = int(str(num)[0])
-    for digit in str(num)[1:]:
-        if (int(digit) < last):
-            return False
-        if (int(digit) > last):
-            last = int(digit)
-    return True
+    return re.search(r'^1*2*3*4*5*6*7*8*9*$', str(num)) is not None
 
 def inspect_range(r: range, length: int=6):
     matching_numbers = []
